@@ -2,7 +2,6 @@ import * as transcript from '../steven.json';
 import {ContentSegment, Sentence, Transcripts} from "./transcripts";
 import {parse} from "./transcription-parser";
 
-
 console.log(transcript as Transcripts);
 const ups = transcript.results.speaker_labels.segments.filter(it => it.items.some(it2 => it2.speaker_label != it.speaker_label)); //this is not really needed
 const sentences = parse(transcript as Transcripts);
@@ -19,7 +18,7 @@ function writeFormatted(content: ContentSegment) {
         ? parseFloat(content.alternatives[0].confidence)
         : content.alternatives[0].confidence))
 
-    return `<span style="color: rgb(${red},0,0)" 
+    return `<span style="color: rgb(${red},0,0)"
                   data-confidence="${content.alternatives[0].confidence}" 
                   data-alternatives="${content.alternatives.map(it => it.content).join(",")}">
                 ${content.alternatives[0].content}
@@ -31,7 +30,7 @@ function writeWithSpeaker(sentence: Sentence): string {
     let startTime = sentence.contentSegments[0].start_time;
     let endTime = sentence.contentSegments[sentence.contentSegments.length - 1].end_time;
 
-    return `[<b>${sentence.speaker_label}</b> ${startTime} - ${endTime}] ${text} </br>`
+    return `<p>[<b>${sentence.speaker_label}</b> ${startTime} - ${endTime}] ${text} </p>`
 }
 
 
@@ -41,8 +40,6 @@ function component() {
 
     element.innerHTML = `Oi! </br></br>
 
-<!--    <input id="file" type="file" />-->
-    
     Number of words: ${br(transcript.results.transcripts[0].transcript.split(" ").length)} 
     Number of segments: ${br(transcript.results.items.length)}
     Number of labeled segments: ${br(transcript.results.speaker_labels.segments.reduce((acc, c) => acc + c.items.length, 0))}
